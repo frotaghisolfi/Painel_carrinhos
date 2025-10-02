@@ -4,7 +4,46 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Registro de Saída e Devolução de Carrinhos</title>
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root{
+      --blue:#1976d2;
+      --orange:#f59e0b;
+      --green:#16a34a;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --bg:#f3f4f6;
+      --max-width:1100px;
+    }
+    *{box-sizing:border-box;font-family:Inter, system-ui, Arial, sans-serif}
+    body{margin:0;background:var(--bg);color:#111;padding:24px;display:flex;justify-content:center}
+    .container{width:100%;max-width:var(--max-width)}
+    h1{margin:0 0 12px;font-size:20px}
+    .card{background:var(--card);padding:16px;border-radius:8px;box-shadow:0 1px 6px rgba(16,24,40,0.06);margin-bottom:16px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type="text"], input[type="date"]{width:100%;padding:8px 10px;border:1px solid #e5e7eb;border-radius:6px}
+    .grid{display:grid;gap:12px}
+    .grid-cols-3{grid-template-columns:repeat(3,1fr)}
+    .grid-cols-2{grid-template-columns:repeat(2,1fr)}
+    .btn{display:inline-block;padding:8px 12px;border-radius:6px;border:none;cursor:pointer}
+    .btn-primary{background:var(--blue);color:white}
+    .btn-ghost{background:transparent;border:1px solid #e5e7eb}
+    .table{width:100%;border-collapse:collapse}
+    .table th, .table td{padding:10px;border-bottom:1px solid #eef2f7;text-align:left;font-size:14px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;color:white}
+    .badge.inuse{background:var(--orange)}
+    .badge.returned{background:var(--green)}
+    .small{font-size:13px;color:var(--muted)}
+    .actions button{margin-right:6px}
+    .alert{background:#fff4e5;border-left:4px solid var(--orange);padding:10px;border-radius:6px;margin-bottom:12px}
+    .muted{color:var(--muted)}
+    .flex{display:flex;gap:8px;align-items:center}
+    .right{margin-left:auto}
+    .pill{background:#eef2ff;color:var(--blue);padding:6px 10px;border-radius:999px;font-size:13px}
+    @media(max-width:800px){
+      .grid-cols-3{grid-template-columns:1fr}
+      .grid-cols-2{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -12,22 +51,22 @@
 
     <!-- Formulário de Saída -->
     <div class="card">
-      <div class="grid grid-cols-3">
-        <div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1">
           <label for="nome">Funcionário</label>
           <input id="nome" type="text" placeholder="Nome completo (ex: João Silva)" />
         </div>
-        <div>
+        <div style="width:140px">
           <label for="c1">Carrinho 1</label>
           <input id="c1" type="text" placeholder="A001" />
         </div>
-        <div>
+        <div style="width:140px">
           <label for="c2">Carrinho 2 (opcional)</label>
           <input id="c2" type="text" placeholder="A002" />
         </div>
       </div>
 
-      <div class="grid grid-cols-3" style="margin-top:16px; align-items:end">
+      <div class="grid grid-cols-3" style="margin-top:12px">
         <div>
           <label for="dataSaida">Data de Saída</label>
           <input id="dataSaida" type="date" />
@@ -36,11 +75,11 @@
           <label for="dataPrevista">Data Prevista de Devolução (opcional)</label>
           <input id="dataPrevista" type="date" />
         </div>
-        <div style="text-align:right">
+        <div style="display:flex;align-items:end;justify-content:flex-end">
           <button id="btnRegistrar" class="btn btn-primary">Registrar Saída</button>
         </div>
       </div>
-      <p class="small" style="margin-top:10px">Dica: preencha a data prevista para alertas automáticos de atraso.</p>
+      <p class="small" style="margin-top:10px">Dica: preencha a data prevista para que o sistema alerte automaticamente quando o carrinho estiver atrasado.</p>
     </div>
 
     <!-- Notificações de carrinhos não retornados -->
@@ -48,7 +87,7 @@
 
     <!-- Carrinhos em uso -->
     <div class="card">
-      <div class="flex" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;margin-bottom:12px">
         <strong>Carrinhos em Uso</strong>
         <span class="pill right" id="countInUse">0</span>
       </div>
@@ -72,7 +111,7 @@
 
     <!-- Histórico -->
     <div class="card">
-      <div class="flex" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;margin-bottom:12px">
         <strong>Histórico de Registros</strong>
         <span class="pill right" id="countHistory">0</span>
       </div>
@@ -93,11 +132,9 @@
       </div>
     </div>
 
-    <div class="small muted" style="text-align:center;margin-top:8px">
-      Dados salvos localmente no navegador (localStorage). Use 'Limpar dados' para reiniciar.
-    </div>
+    <div class="small muted" style="text-align:center;margin-top:8px">Dados salvos localmente no seu navegador (localStorage). Use 'Limpar dados' para reiniciar.</div>
 
-    <div class="flex" style="margin-top:16px; gap:10px; justify-content:center;">
+    <div style="display:flex;gap:8px;margin-top:10px">
       <button id="btnClear" class="btn btn-ghost">Limpar dados</button>
       <button id="btnSeed" class="btn btn-ghost">Carregar exemplos</button>
       <button id="btnExport" class="btn btn-primary">Exportar CSV</button>
@@ -105,6 +142,182 @@
 
   </div>
 
-  <script src="js/app.js"></script>
-</body>
-</html>
+  <script>
+    const STORAGE_KEY = 'registroCarrinhos_v1';
+
+    const nomeEl = document.getElementById('nome');
+    const c1El = document.getElementById('c1');
+    const c2El = document.getElementById('c2');
+    const dataSaidaEl = document.getElementById('dataSaida');
+    const dataPrevEl = document.getElementById('dataPrevista');
+    const btnRegistrar = document.getElementById('btnRegistrar');
+    const tableInUseBody = document.querySelector('#tableInUse tbody');
+    const tableHistoryBody = document.querySelector('#tableHistory tbody');
+    const notReturnedContainer = document.getElementById('notReturnedContainer');
+    const countInUse = document.getElementById('countInUse');
+    const countHistory = document.getElementById('countHistory');
+    const btnClear = document.getElementById('btnClear');
+    const btnSeed = document.getElementById('btnSeed');
+    const btnExport = document.getElementById('btnExport');
+
+    function formatDateToInput(d = new Date()){
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth()+1).padStart(2,'0');
+      const dd = String(d.getDate()).padStart(2,'0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+    dataSaidaEl.value = formatDateToInput();
+
+    function loadData(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }
+    function saveData(arr){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+    function uid(){ return 'id_' + Math.random().toString(36).slice(2,9); }
+    function toDisplayDate(iso){
+      if(!iso) return '-';
+      const d = new Date(iso + 'T00:00:00');
+      return d.toLocaleDateString('pt-BR');
+    }
+    function isOverdue(item){
+      if(!item.dataPrevista || item.status === 'devolvido') return false;
+      const today = new Date(); today.setHours(0,0,0,0);
+      const prev = new Date(item.dataPrevista + 'T00:00:00');
+      return prev < today;
+    }
+
+    function render(){
+      const data = loadData();
+      const inUse = data.filter(r => r.status === 'emuso');
+      const history = data.filter(r => r.status === 'devolvido');
+      const overdue = inUse.filter(isOverdue);
+      renderNotReturned(overdue);
+
+      tableInUseBody.innerHTML = '';
+      inUse.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(item.nome)}</td>
+          <td>${escapeHtml(item.carrinho1)}</td>
+          <td>${escapeHtml(item.carrinho2 || '-')}</td>
+          <td>${toDisplayDate(item.dataSaida)}</td>
+          <td>${toDisplayDate(item.dataPrevista)}</td>
+          <td><span class="badge inuse">Em uso</span></td>
+          <td class="actions">
+            <button class="btn btn-primary" data-id="${item.id}" data-action="devolver">Registrar Devolução</button>
+            <button class="btn btn-ghost" data-id="${item.id}" data-action="editar">Editar</button>
+          </td>
+        `;
+        tableInUseBody.appendChild(tr);
+      });
+
+      tableHistoryBody.innerHTML = '';
+      history.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(item.nome)}</td>
+          <td>${escapeHtml(item.carrinho1)}</td>
+          <td>${escapeHtml(item.carrinho2 || '-')}</td>
+          <td>${toDisplayDate(item.dataSaida)}</td>
+          <td>${toDisplayDate(item.dataDevolucao)}</td>
+          <td><span class="badge returned">Devolvido</span></td>
+        `;
+        tableHistoryBody.appendChild(tr);
+      });
+
+      countInUse.textContent = inUse.length;
+      countHistory.textContent = history.length;
+    }
+
+    function renderNotReturned(list){
+      if(list.length === 0){ notReturnedContainer.innerHTML = ''; return; }
+      let html = `<div class="alert"><strong>Atenção — ${list.length} carrinho(s) com devolução prevista vencida:</strong><ul style="margin-top:8px">`;
+      list.forEach(item => {
+        html += `<li><strong>${escapeHtml(item.nome)}</strong> — ${escapeHtml(item.carrinho1)}${item.carrinho2 ? ' / ' + escapeHtml(item.carrinho2) : ''} — saída: ${toDisplayDate(item.dataSaida)} — prevista: ${toDisplayDate(item.dataPrevista)}</li>`;
+      });
+      html += `</ul></div>`;
+      notReturnedContainer.innerHTML = html;
+    }
+
+    function escapeHtml(str = ''){ return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    btnRegistrar.addEventListener('click', () => {
+      const nome = nomeEl.value.trim();
+      const carr1 = c1El.value.trim();
+      const carr2 = c2El.value.trim() || null;
+      const dataSaida = dataSaidaEl.value;
+      const dataPrev = dataPrevEl.value || null;
+
+      if(!nome || !carr1 || !dataSaida){ alert('Preencha pelo menos: Funcionário, Carrinho 1 e Data de Saída.'); return; }
+
+      const data = loadData();
+      const registro = { id: uid(), nome, carrinho1: carr1, carrinho2: carr2, dataSaida, dataPrevista: dataPrev, dataDevolucao: null, status: 'emuso' };
+      data.unshift(registro);
+      saveData(data);
+      nomeEl.value = ''; c1El.value = ''; c2El.value = ''; dataPrevEl.value = '';
+      render();
+    });
+
+    document.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('button'); if(!btn) return;
+      const action = btn.getAttribute('data-action'); const id = btn.getAttribute('data-id');
+      if(action === 'devolver') handleDevolver(id);
+      if(action === 'editar') handleEditar(id);
+    });
+
+    function handleDevolver(id){
+      const data = loadData();
+      const idx = data.findIndex(r => r.id === id);
+      if(idx === -1) return alert('Registro não encontrado.');
+      const hoje = formatDateToInput();
+      const input = prompt('Informe a data de devolução (AAAA-MM-DD)', hoje);
+      if(!input) return;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(input)) return alert('Formato de data inválido. Use YYYY-MM-DD.');
+      data[idx].dataDevolucao = input;
+      data[idx].status = 'devolvido';
+      saveData(data);
+      render();
+    }
+
+    function handleEditar(id){
+      const data = loadData();
+      const idx = data.findIndex(r => r.id === id);
+      if(idx === -1) return alert('Registro não encontrado.');
+      const r = data[idx];
+      const nome = prompt('Editar nome', r.nome); if(nome === null) return;
+      const c1 = prompt('Editar carrinho 1', r.carrinho1); if(c1 === null) return;
+      const c2 = prompt('Editar carrinho 2 (vazio = nenhum)', r.carrinho2 || ''); if(c2 === null) return;
+      const dataPrev = prompt('Editar data prevista de devolução (YYYY-MM-DD) ou vazio', r.dataPrevista || ''); if(dataPrev === null) return;
+      r.nome = nome.trim() || r.nome;
+      r.carrinho1 = c1.trim() || r.carrinho1;
+      r.carrinho2 = c2.trim() || null;
+      r.dataPrevista = dataPrev.trim() || null;
+      saveData(data); render();
+    }
+
+    btnClear.addEventListener('click', () => { if(!confirm('Remover todos os registros?')) return; localStorage.removeItem(STORAGE_KEY); render(); });
+
+    btnSeed.addEventListener('click', () => {
+      if(!confirm('Carregar exemplos de teste (substitui os dados atuais)?')) return;
+      const examples = [
+        { id: uid(), nome:'João Silva', carrinho1:'A001', carrinho2:'A002', dataSaida:'2023-06-15', dataPrevista:'2023-06-16', dataDevolucao:null, status:'emuso' },
+        { id: uid(), nome:'Maria Santos', carrinho1:'B003', carrinho2:null, dataSaida:'2023-06-16', dataPrevista:'2023-06-16', dataDevolucao:null, status:'emuso' },
+        { id: uid(), nome:'Pedro Costa', carrinho1:'C005', carrinho2:'C006', dataSaida:'2023-06-16', dataPrevista:'2023-06-18', dataDevolucao:null, status:'emuso' },
+        { id: uid(), nome:'Ana Oliveira', carrinho1:'D007', carrinho2:'D008', dataSaida:'2023-06-10', dataPrevista:'2023-06-12', dataDevolucao:'2023-06-12', status:'devolvido' },
+        { id: uid(), nome:'Carlos Mendes', carrinho1:'A010', carrinho2:null, dataSaida:'2023-06-11', dataPrevista:'2023-06-13', dataDevolucao:'2023-06-13', status:'devolvido' },
+        { id: uid(), nome:'Juliana Freitas', carrinho1:'B012', carrinho2:'B013', dataSaida:'2023-06-12', dataPrevista:'2023-06-14', dataDevolucao:'2023-06-14', status:'devolvido' }
+      ];
+      saveData(examples); render();
+    });
+
+    // Exportar CSV
+    function exportCSV() {
+      const data = loadData();
+      if (data.length === 0) { alert("Nenhum dado para exportar!"); return; }
+      const headers = ["ID","Funcionário","Carrinho 1","Carrinho 2","Data Saída","Data Prevista","Data Devolução","Status"];
+      const rows = data.map(r => [r.id,r.nome,r.carrinho1,r.carrinho2 || "",r.dataSaida,r.dataPrevista || "",r.dataDevolucao || "",r.status]);
+      let csvContent = [headers,...rows].map(e => e.join(";")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("
