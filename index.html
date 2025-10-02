@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Controle de Carrinhos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📋 Registro de Entrega e Devolução</h1>
+
+  <!-- Formulário de saída -->
+  <form id="saidaForm">
+    <label>Nome Completo:</label>
+    <input type="text" id="nome" required>
+
+    <label>Número do Carrinho 1:</label>
+    <input type="text" id="carrinho1">
+
+    <label>Número do Carrinho 2:</label>
+    <input type="text" id="carrinho2">
+
+    <button type="submit">Registrar Saída</button>
+  </form>
+
+  <h2>🚚 Saídas em aberto</h2>
+  <table id="tabelaSaidas">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Carrinho 1</th>
+        <th>Carrinho 2</th>
+        <th>Data Saída</th>
+        <th>Hora Saída</th>
+        <th>Retorno</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>✔️ Histórico de Entregas</h2>
+  <table id="tabelaHistorico">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Carrinho 1</th>
+        <th>Carrinho 2</th>
+        <th>Data Saída</th>
+        <th>Hora Saída</th>
+        <th>Data Retorno</th>
+        <th>Hora Retorno</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
